@@ -6,7 +6,13 @@ app = FastAPI(title='Onelab Reconciliation API')
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['http://localhost:5173', 'https://ai-financial-reconciliation.vercel.app', 'https://onelab-reconciliation.vercel.app'],
+    allow_origins=[
+        'http://localhost:5173',
+        'http://localhost:3000',
+        'https://ai-financial-reconciliation.vercel.app',
+        'https://onelab-reconciliation.vercel.app',
+        'https://ai-financial-reconciliation-4hu0vdu2b-aditi-ap07s-projects.vercel.app'
+    ],
     allow_credentials=True,
     allow_methods=['*'],
     allow_headers=['*'],
