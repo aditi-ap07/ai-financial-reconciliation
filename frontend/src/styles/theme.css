@@ -1,0 +1,101 @@
+/* ===== DARK THEME (default) ===== */
+:root {
+  /* Backgrounds — layered depth */
+  --bg-base: #0a0a0f;          /* page background */
+  --bg-surface: #0f0f17;       /* card/panel background */
+  --bg-elevated: #16161f;      /* table rows, inputs */
+  --bg-hover: #1c1c2a;         /* hover states */
+  --bg-border: #1e1e2e;        /* borders */
+
+  /* Brand */
+  --brand: #6366f1;            /* indigo — primary actions */
+  --brand-dim: #3730a3;        /* darker brand for hover */
+  --brand-glow: rgba(99,102,241,0.15); /* subtle glow */
+
+  /* Semantic colors */
+  --green: #10b981;            /* matched / success */
+  --green-dim: rgba(16,185,129,0.1);
+  --amber: #f59e0b;            /* rounding / warning */
+  --amber-dim: rgba(245,158,11,0.1);
+  --red: #ef4444;              /* critical / orphan / duplicate */
+  --red-dim: rgba(239,68,68,0.1);
+  --blue: #3b82f6;             /* next month / deferred */
+  --blue-dim: rgba(59,130,246,0.1);
+  --purple: #a855f7;           /* AI-generated content */
+  --purple-dim: rgba(168,85,247,0.1);
+  --grey: #6b7280;             /* unmatched / neutral */
+  --grey-dim: rgba(107,114,128,0.1);
+
+  /* Typography */
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #475569;
+  --text-inverse: #0a0a0f;
+
+  /* Misc */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.4);
+  --shadow-elevated: 0 4px 16px rgba(0,0,0,0.5);
+}
+
+/* ===== LIGHT THEME ===== */
+:root[data-theme="light"] {
+  /* Backgrounds — layered depth */
+  --bg-base: #f9fafb;          /* page background */
+  --bg-surface: #ffffff;       /* card/panel background */
+  --bg-elevated: #f3f4f6;      /* table rows, inputs */
+  --bg-hover: #e5e7eb;         /* hover states */
+  --bg-border: #e5e7eb;        /* borders */
+
+  /* Brand */
+  --brand: #4f46e5;            /* indigo — primary actions */
+  --brand-dim: #818cf8;        /* lighter brand for hover */
+  --brand-glow: rgba(79,70,229,0.1); /* subtle glow */
+
+  /* Semantic colors */
+  --green: #059669;            /* matched / success */
+  --green-dim: rgba(5,150,105,0.1);
+  --amber: #d97706;            /* rounding / warning */
+  --amber-dim: rgba(217,119,6,0.1);
+  --red: #dc2626;              /* critical / orphan / duplicate */
+  --red-dim: rgba(220,38,38,0.1);
+  --blue: #2563eb;             /* next month / deferred */
+  --blue-dim: rgba(37,99,235,0.1);
+  --purple: #9333ea;           /* AI-generated content */
+  --purple-dim: rgba(147,51,234,0.1);
+  --grey: #6b7280;             /* unmatched / neutral */
+  --grey-dim: rgba(107,114,128,0.08);
+
+  /* Typography */
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+  --text-inverse: #f9fafb;
+
+  /* Misc */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-elevated: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+body {
+  background-color: var(--bg-base);
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  margin: 0;
+  padding: 0;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg-base); }
+::-webkit-scrollbar-thumb { background: var(--bg-border); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
