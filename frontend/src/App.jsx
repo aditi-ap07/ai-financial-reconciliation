@@ -3,7 +3,7 @@ import axios from 'axios'
 
 const api = axios.create({ baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api', timeout: 10000 })
 
-// Mock historical data for trends (last 4 weeks)
+// Mock historical data for trends (generated fresh each demo run)
 const generateMockHistory = () => {
   const now = new Date()
   return Array.from({ length: 4 }, (_, i) => {
@@ -19,8 +19,6 @@ const generateMockHistory = () => {
     }
   })
 }
-
-const mockHistory = generateMockHistory()
 
 // Simple CSV export
 const exportToCSV = (data, filename) => {
@@ -63,6 +61,7 @@ export default function App() {
     }
     return 'dark'
   })
+  const [mockHistory, setMockHistory] = useState([])
 
   const toggleTheme = () => {
     const newTheme = theme === 'dark' ? 'light' : 'dark'
@@ -193,6 +192,11 @@ export default function App() {
     setExceptions([])
     setResolved([])
     setNarrative('Running reconciliation...')
+    
+    // Generate fresh mock history for this demo run
+    const freshMockHistory = generateMockHistory()
+    setMockHistory(freshMockHistory)
+    
     await new Promise(r => setTimeout(r, 1000))
     const mockSummary = { total_transactions: 50, total_matched: 0, total_exceptions: 0, match_rate: 0, unmatched_value: 0 }
     const mockExceptions = []
@@ -202,14 +206,50 @@ export default function App() {
       setSummary({ ...mockSummary })
       await new Promise(r => setTimeout(r, 50))
     }
-    // Add exceptions
-    const sampleExceptions = [
-      { transaction_id: 'TXN_001', gap_type: 'rounding', gap_amount: 0.01, platform_amount: 142.00, settled_amount: 142.01 },
-      { transaction_id: 'TXN_002', gap_type: 'duplicate', gap_amount: 50.00, platform_amount: 50.00, settled_amount: 100.00 },
-      { transaction_id: 'TXN_003', gap_type: 'orphan', gap_amount: 25.00, platform_amount: null, settled_amount: 25.00 },
-      { transaction_id: 'TXN_004', gap_type: 'unmatched', gap_amount: 75.00, platform_amount: 75.00, settled_amount: 0.00 },
-      { transaction_id: 'TXN_005', gap_type: 'next_month', gap_amount: 10.00, platform_amount: 10.00, settled_amount: null }
-    ]
+    // Add exceptions - generate random ones each time
+    const exceptionTypes = ['rounding', 'duplicate', 'orphan', 'unmatched', 'next_month']
+    const sampleExceptions = []
+    
+    for (let i = 0; i < 5; i++) {
+      const gapType = exceptionTypes[Math.floor(Math.random() * exceptionTypes.length)]
+      let gapAmount, platformAmount, settledAmount
+      
+      switch (gapType) {
+        case 'rounding':
+          gapAmount = (Math.random() * 0.1).toFixed(2) // 0.00-0.10
+          platformAmount = (100 + Math.random() * 100).toFixed(2)
+          settledAmount = (parseFloat(platformAmount) + parseFloat(gapAmount)).toFixed(2)
+          break
+        case 'duplicate':
+          gapAmount = (Math.random() * 100 + 10).toFixed(2) // 10-110
+          platformAmount = gapAmount
+          settledAmount = (parseFloat(gapAmount) * 2).toFixed(2)
+          break
+        case 'orphan':
+          gapAmount = (Math.random() * 50 + 5).toFixed(2) // 5-55
+          platformAmount = null
+          settledAmount = gapAmount
+          break
+        case 'unmatched':
+          gapAmount = (Math.random() * 200 + 20).toFixed(2) // 20-220
+          platformAmount = gapAmount
+          settledAmount = '0.00'
+          break
+        case 'next_month':
+          gapAmount = (Math.random() * 30 + 1).toFixed(2) // 1-31
+          platformAmount = gapAmount
+          settledAmount = null
+          break
+      }
+      
+      sampleExceptions.push({
+        transaction_id: `TXN_${String(i + 1).padStart(3, '0')}`,
+        gap_type: gapType,
+        gap_amount: parseFloat(gapAmount),
+        platform_amount: platformAmount ? parseFloat(platformAmount) : null,
+        settled_amount: settledAmount ? parseFloat(settledAmount) : null
+      })
+    }
     for (const exc of sampleExceptions) {
       const enhanced = { ...exc, confidence: calculateConfidence(exc), risk: calculateRisk(exc), aging: calculateAging(exc), recommendedAction: getRecommendedAction(exc), status: 'unresolved' }
       mockExceptions.push(enhanced)
